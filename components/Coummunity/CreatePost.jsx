@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 
 const SUGGESTED_TAGS = [
     "Investing", "SIP", "Stocks", "Budgeting",
@@ -58,6 +58,74 @@ export default function CreatePost({ onPost }) {
     const [selectedTags, setSelectedTags] = useState([])
     const [showTagPicker, setShowTagPicker] = useState(false);
     const titleRef = useRef(null);
+
+ const hasUnsavedChanges = useMemo(
+  () =>
+    expanded &&
+    (
+      title.trim().length > 0 ||
+      body.trim().length > 0 ||
+      selectedTags.length > 0
+    ),
+  [expanded, title, body, selectedTags]
+);
+
+    useEffect(() => {
+        if (!hasUnsavedChanges) return;
+
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+            event.returnValue = "";
+        };
+
+        const handleInternalNavigation = (event) => {
+            const link = event.target.closest("a[href]");
+            if (!link) return;
+
+            const href = link.getAttribute("href");
+            const isModifiedClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+            const opensInNewTab = link.target === "_blank";
+            const isHashLink = href?.startsWith("#");
+
+            if (!href || isHashLink || isModifiedClick || opensInNewTab) return;
+
+            const confirmed = window.confirm(
+                "You have unsaved changes. Are you sure you want to leave?"
+            );
+
+            if (!confirmed) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        document.addEventListener("click", handleInternalNavigation, true);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+            document.removeEventListener("click", handleInternalNavigation, true);
+        };
+    }, [hasUnsavedChanges]);
+
+    const resetForm = () => {
+        setTitle("");
+        setBody("");
+        setSelectedTags([]);
+        setShowTagPicker(false);
+        setExpanded(false);
+    };
+
+    const handleCancel = () => {
+        if (
+            hasUnsavedChanges &&
+            !window.confirm("You have unsaved changes. Are you sure you want to discard them?")
+        ) {
+            return;
+        }
+
+        resetForm();
+    };
  
     const handleExpand = () => {
         setExpanded(true)
@@ -73,10 +141,7 @@ export default function CreatePost({ onPost }) {
     const handleSubmit = () => {
         if (!title.trim()) return;
         onPost?.({ title: title.trim(), body: body.trim(), tags: selectedTags });
-        setTitle("");
-        setBody("");
-        setSelectedTags([]);
-        setExpanded(false);
+        resetForm();
     };
 
     return (
@@ -172,7 +237,7 @@ export default function CreatePost({ onPost }) {
                                 )}
                             </button>
                             <button
-                                onClick={() => { setExpanded(false); setTitle(""); setBody(""); setSelectedTags([]); setShowTagPicker(false); }}
+                                onClick={handleCancel}
                                 className="px-3 py-1.5 rounded-lg border border-[#E8E8E8] text-[12.5px] text-[#888] hover:text-[#0F0F0F] hover:border-[#C0C0C0] bg-white transition-all duration-150"
                             >
                                 Cancel
