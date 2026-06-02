@@ -118,12 +118,13 @@ const SORT_OPTIONS = [
   { id: "unanswered", label: "Unanswered" },
 ];
 
-export default function DiscussionFeed({ activeCategory, newPost }) {
+export default function DiscussionFeed({
+  activeCategory,
+  userPosts = [],
+}) {
   const [sort, setSort] = useState("trending");
 
-  const allPosts = newPost
-    ? [{ id: 999, ...newPost, author: "You", timeAgo: "just now", replies: 0, likes: 0, views: "1" }, ...POSTS]
-    : POSTS;
+  const allPosts = [...userPosts, ...POSTS];
 
   const filtered = activeCategory === "all"
     ? allPosts
