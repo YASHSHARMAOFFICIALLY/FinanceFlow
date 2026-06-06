@@ -2,19 +2,39 @@ export default function Footer() {
   const cols = [
     {
       heading: "Product",
-      links: ["Overview", "Changelog", "Roadmap", "Pricing"],
+      links: [
+        { name: "Overview", href: "/overview" },
+        { name: "Changelog", href: "/changelog" },
+        { name: "Roadmap", href: "/learn#path" },
+        { name: "Pricing", href: "/pricing" },
+      ],
     },
     {
       heading: "Tools",
-      links: ["SIP Calculator", "Budget Planner", "Net Worth Tracker", "EMI Calculator"],
+      links: [
+        { name: "Stock Market Tool", href: "/tools#stock-tool" },
+        { name: "SIP Calculator", href: "/tools#sip-calc" },
+        { name: "EMI Calculator", href: "/tools#emi-calc" },
+        { name: "Financial Goal Tracker", href: "/tools#goal-tracker" },
+      ],
     },
     {
-      heading: "Blog",
-      links: ["Investing Basics", "Tax Planning", "SIP Guide", "Personal Finance 101"],
+  heading: "Blog",
+      links: [
+        { name: "Investing Basics", href: "/learn#blogs" },
+        { name: "Tax Planning", href: "/learn#watch" },
+        { name: "SIP Guide", href: "/learn#blogs" },
+        { name: "Personal Finance 101", href: "/blog/personal-finance-101" },
+      ],
     },
     {
       heading: "Company",
-      links: ["About", "Careers", "Privacy Policy", "Terms of Service"],
+      links: [
+        { name: "About", href: "/overview" },
+        { name: "Careers", href: "/careers" },
+        { name: "Privacy Policy", href: "/privacy-policy" },
+        { name: "Terms of Service", href: "/terms" },
+      ],
     },
   ];
 
@@ -46,12 +66,12 @@ export default function Footer() {
               </div>
               <ul className="space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.name}>
                     <a
-                      href="#"
+                      href={link.href}
                       className="text-[13px] text-[#888] dark:text-[#777] hover:text-[#0F0F0F] dark:hover:text-white transition-colors duration-200"
                     >
-                      {link}
+                      {link.name}
                     </a>
                   </li>
                 ))}
