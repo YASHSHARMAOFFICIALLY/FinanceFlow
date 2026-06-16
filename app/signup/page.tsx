@@ -98,7 +98,7 @@ export default function SignUpPage() {
                 <CardHeader className="space-y-2 text-center">
                     <CardTitle className="text-2xl font-semibold tracking-tight">Create an Account</CardTitle>
                     <CardDescription className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-                        Join Finveda to manage your medical records and find healthcare
+                        Join Finveda to manage your finances and achieve your financial goals
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
