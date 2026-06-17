@@ -1,12 +1,14 @@
 import {z} from "zod"
 
 export const signupSchema = z.object({
-    name:z.string().min(2,"Name must be atleast 2 characters"),
+    name:z.string().min(2,"Name must be at least 2 characters"),
     email:z.string().email("Invalid email"),
-    password:z.string().min(8,"password must be atleast 8 character ")
-    .regex(/[A-Z]/, "Must contain uppercase")
-    .regex(/[a-z]/, "Must contain lowercase")
-    .regex(/[0-9]/, "Must contain number")
+    password:z.string()
+    .min(8,"Password must be at least 8 characters long")
+    .regex(/[A-Z]/, "Password should include at least one uppercase letter")
+    .regex(/[a-z]/, "Password should include at least one lowercase letter")
+    .regex(/[0-9]/, "Password should include at least one number")
+    .regex(/[^A-Za-z0-9]/, "Password should include at least one special character")
 })
 
 export const dashboardGoalSchema = z.object({
