@@ -50,13 +50,11 @@ export default function GoalTracker() {
 
   const milestones = [25, 50, 75, 100];
 const handleCopy = async () => {
-  const resultText = `
-Goal Name: ${goalName}
-Target Goal Amount: ₹${target}
-Current Savings: ₹${saved}
-Remaining Amount: ₹${remaining}
-Monthly Savings Needed: ₹${monthlySuggested} / month
-  `;
+  const resultText = `Goal Name: ${goalName}
+Target Goal Amount: ${fmt(target)}
+Current Savings: ${fmt(saved)}
+Remaining Amount: ${fmt(remaining)}
+Monthly Savings Needed: ${fmt(monthlySuggested)} / month`;
 
   try {
     await navigator.clipboard.writeText(resultText);

@@ -87,9 +87,7 @@ Market Cap: ${stock.cap}
           <div className="flex-1 max-w-lg">
             {/* Search */}
             <div className="relative mb-6">
-             <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E0E0E0] dark:border-[#262626] bg-white dark:bg-[#111111] transition-all duration-200">
-              
-    
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E0E0E0] dark:border-[#262626] bg-white dark:bg-[#111111] transition-all duration-200">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <circle cx="7" cy="7" r="5" stroke="#999" strokeWidth="1.4"/>
                   <path d="M11 11L14 14" stroke="#999" strokeWidth="1.4" strokeLinecap="round"/>
@@ -99,7 +97,6 @@ Market Cap: ${stock.cap}
                   placeholder="Search stock (e.g. TCS, Reliance)"
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-              
                 />
                 {query && (
                   <button onClick={() => setQuery("")} className="text-[#BBB] hover:text-[#666] dark:hover:text-[#AAA] transition-colors">
@@ -107,10 +104,6 @@ Market Cap: ${stock.cap}
                   </button>
                 )}
               </div>
-            
- 
-              
-           
             </div>
 
             {/* Stock card */}
@@ -192,8 +185,8 @@ Market Cap: ${stock.cap}
   </button>
 </div>
     </section>
-            );
-
+    );
+}
 
 function SectionLabel({ number, label }) {
   return (
@@ -204,5 +197,4 @@ function SectionLabel({ number, label }) {
     </div>
   
   );
-}
 }
