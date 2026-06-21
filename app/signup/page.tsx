@@ -19,9 +19,10 @@ export default function SignUpPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState(""); 
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
     
     // Check if user is already logged in
@@ -35,38 +36,37 @@ export default function SignUpPage() {
 
   
     const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+        e.preventDefault();
+        setLoading(true);
 
-    // 1. Validate
-    const result = signupSchema.safeParse({ name, email, password });
-    if (!result.success) {
-        setLoading(false);
-        return toast.error(result.error.issues[0].message);
-    }
-
-    // 2. Execute
-    try {
-        const { data, error } = await authClient.signUp.email({
-            email,
-            password,
-            name,
-            callbackURL: "/dashboard" // Note: Some versions of Better Auth redirect automatically
-        });
-
-        if (error) {
-            toast.error(error.message || "Failed to create account");
-        } else {
-            toast.success("Account created! Redirecting...");
-            // Force a hard navigation if router.push feels "stuck"
-            window.location.href = "/dashboard"; 
+        // Zod Schema Validate (Optimized per CodeRabbitAI to check fields & refine rules natively)
+        const result = signupSchema.safeParse({ name, email, password, confirmPassword });
+        if (!result.success) {
+            setLoading(false);
+            return toast.error(result.error.issues[0].message);
         }
-    } catch (err) {
-        toast.error("A network error occurred.");
-    } finally {
-        setLoading(false);
-    }
-};
+
+        // Execute
+        try {
+            const { data, error } = await authClient.signUp.email({
+                email,
+                password,
+                name,
+                callbackURL: "/dashboard" 
+            });
+
+            if (error) {
+                toast.error(error.message || "Failed to create account");
+            } else {
+                toast.success("Account created! Redirecting...");
+                window.location.href = "/dashboard"; 
+            }
+        } catch (err) {
+            toast.error("A network error occurred.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSocialSignUp = async (provider: "google" | "github") => {
         setLoading(true);
@@ -80,6 +80,10 @@ export default function SignUpPage() {
             setLoading(false);
         }
     };
+
+    // Real-time validation helper for interactive styling/ux
+    const passwordsMatch = confirmPassword === "" || password === confirmPassword;
+    const isSubmitDisabled = loading || !name || !email || password.length < 8 || !confirmPassword || password !== confirmPassword;
 
     if (isPending) {
         return (
@@ -160,7 +164,43 @@ export default function SignUpPage() {
                                 Must be at least 8 characters long
                             </p>
                         </div>
-                        <Button type="submit" className="w-full h-11 rounded-lg bg-gradient-to-r from-gray-900 to-gray-700 text-white hover:opacity-90 transition cursor-pointer" disabled={loading}>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                <Input 
+                                    id="confirmPassword" 
+                                    type={showConfirmPassword ? "text" : "password"} 
+                                    placeholder="••••••••"
+                                    className={`pl-10 pr-10 h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 ${
+                                        passwordsMatch ? 'focus-visible:ring-blue-400' : 'focus-visible:ring-red-500 ring-2 ring-red-500'
+                                    }`}
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required 
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword((v) => !v)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                                >
+                                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
+                            {!passwordsMatch && (
+                                <p className="text-[11px] text-red-500 font-medium animate-in fade-in-50 slide-in-from-top-1">
+                                    ❌ Passwords do not match
+                                </p>
+                            )}
+                        </div>
+
+                        <Button 
+                            type="submit" 
+                            className="w-full h-11 rounded-lg bg-gradient-to-r from-gray-900 to-gray-700 text-white hover:opacity-90 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" 
+                            disabled={isSubmitDisabled}
+                        >
                             {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                             Create Account
                         </Button>
@@ -183,10 +223,10 @@ export default function SignUpPage() {
                             className="h-10 rounded-lg border border-gray-200 dark:border-[#303030] bg-white dark:bg-[#1A1A1A] hover:bg-gray-50 dark:hover:bg-[#222] flex items-center justify-center gap-2 cursor-pointer"
                             onClick={() => handleSocialSignUp("google")}
                             disabled={loading}
-                            >
+                        >
                             <img
-                            src="https://www.svgrepo.com/show/475656/google-color.svg"
-                            className="h-5 w-5"
+                                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                                className="h-5 w-5"
                             />
                             Google
                         </Button>
@@ -195,10 +235,10 @@ export default function SignUpPage() {
                             className="h-10 rounded-lg border border-gray-200 dark:border-[#303030] bg-white dark:bg-[#1A1A1A] hover:bg-gray-50 dark:hover:bg-[#222] flex items-center justify-center gap-2 cursor-pointer"
                             onClick={() => handleSocialSignUp("github")}
                             disabled={loading}
-                            >
+                        >
                             <img
-                            src="https://www.svgrepo.com/show/512317/github-142.svg"
-                            className="h-5 w-5"
+                                src="https://www.svgrepo.com/show/512317/github-142.svg"
+                                className="h-5 w-5"
                             />
                             Github
                         </Button>
@@ -214,3 +254,4 @@ export default function SignUpPage() {
         </div>
     );
 }
+
