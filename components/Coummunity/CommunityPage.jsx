@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import CommunityHero from "./CommunityHero";
@@ -24,10 +24,10 @@ function Navbar() {
 
         <div className="hidden md:flex items-center gap-8">
           {[
-            { label: "Tools",     href: "/tools" },
-            { label: "Learn",     href: "/learn" },
+            { label: "Tools", href: "/tools" },
+            { label: "Learn", href: "/learn" },
             { label: "Community", href: "/community", active: true },
-            { label: "Pricing",   href: "/pricing" },
+            { label: "Pricing", href: "/pricing" },
           ].map(({ label, href, active }) => (
             <Link
               key={label}
@@ -51,6 +51,7 @@ function Navbar() {
           >
             Log In
           </Link>
+
           <Link
             href="/signup"
             className="text-[13.5px] px-4 py-2 rounded-lg bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] hover:bg-[#2a2a2a] dark:hover:bg-[#E0E0E0] transition-all tracking-[-0.01em] shadow-sm"
@@ -63,49 +64,88 @@ function Navbar() {
   );
 }
 
-
-
- export default function CommunityPage() {
+export default function CommunityPage() {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [newPost, setNewPost] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const [highlightForm, setHighlightForm] = useState(false);
   const createRef = useRef(null);
 
+  useEffect(() => {
+    const savedPosts = JSON.parse(
+      localStorage.getItem("financeflow-community-posts") || "[]"
+    );
+
+    setUserPosts(savedPosts);
+  }, []);
+
   const handleStartDiscussion = () => {
-    createRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    createRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
+    setHighlightForm(true);
+
+    setTimeout(() => {
+      setHighlightForm(false);
+    }, 1500);
   };
 
-  const handlePost = (post) => {
-    setNewPost(post);
+ const handlePost = (post) => {
+  const newPost = {
+    id: Date.now(),
+    ...post,
+    category: post.tags?.[0] || "all",
+    author: "You",
+    timeAgo: "just now",
+    replies: 0,
+    likes: 0,
+    views: "1",
   };
+
+  const updatedPosts = [newPost, ...userPosts];
+
+  setUserPosts(updatedPosts);
+  localStorage.setItem(
+    "financeflow-community-posts",
+    JSON.stringify(updatedPosts)
+  );
+};
+
+    
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#111] font-sans antialiased">
       <Navbar />
 
       <div className="pt-16">
-        {/* Hero */}
         <CommunityHero onStartDiscussion={handleStartDiscussion} />
 
-        {/* Main layout */}
         <div className="max-w-6xl mx-auto px-5 py-8">
           <div className="flex gap-6 items-start">
-            {/* Left: main content */}
             <div className="flex-1 min-w-0 flex flex-col gap-5">
-              {/* Create post */}
-              <div ref={createRef}>
+              <div
+                ref={createRef}
+                className={`rounded-2xl transition-all duration-300 ${
+                  highlightForm ? "ring-4 ring-[#C9A84C]/50 shadow-lg" : ""
+                }`}
+              >
                 <CreatePost onPost={handlePost} />
               </div>
 
-              {/* Categories */}
               <div className="overflow-x-auto pb-1">
-                <Categories active={activeCategory} onChange={setActiveCategory} />
+                <Categories
+                  active={activeCategory}
+                  onChange={setActiveCategory}
+                />
               </div>
 
-              {/* Feed */}
-              <DiscussionFeed activeCategory={activeCategory} newPost={newPost} />
+              <DiscussionFeed
+                activeCategory={activeCategory}
+                userPosts={userPosts}
+              />
             </div>
 
-            {/* Right: sidebar */}
             <div className="w-72 flex-shrink-0 hidden lg:block sticky top-20">
               <CommunitySidebar />
             </div>
