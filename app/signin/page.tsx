@@ -20,10 +20,10 @@ function SignInForm() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    
+
     const nextPath = searchParams.get("next");
     const redirectTarget = nextPath?.startsWith("/") ? nextPath : "/dashboard";
-    
+
     const { data: session, isPending } = authClient.useSession();
 
     useEffect(() => {
@@ -87,37 +87,40 @@ function SignInForm() {
                         Enter your credentials to access your dashboard
                     </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-4">
                     <form onSubmit={handleEmailSignIn} className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input 
+                            <Input
                                 className="h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                                id="email" type="email" placeholder="name@example.com" 
-                                value={email} onChange={(e) => setEmail(e.target.value)} required 
+                                id="email" type="email" placeholder="name@example.com"
+                                value={email} onChange={(e) => setEmail(e.target.value)} required
                             />
                         </div>
                         <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="password">Password</Label>
-                                <Link href="/forgot-password" className="text-xs text-primary hover:underline">
+                            <Label htmlFor="password">Password</Label>
+                            <div className="text-right">
+                                <Link
+                                    href="/forgot-password"
+                                    className="text-xs text-primary hover:underline"
+                                >
                                     Forgot password?
                                 </Link>
                             </div>
                             <div className="relative">
-                                <Input 
+                                <Input
                                     className="h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400 pr-10"
-                                    id="password" type={showPassword ? "text" : "password"} 
-                                    value={password} onChange={(e) => setPassword(e.target.value)} required 
+                                    id="password" type={showPassword ? "text" : "password"}
+                                    value={password} onChange={(e) => setPassword(e.target.value)} required
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword((v) => !v)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                    aria-label={showPassword ? "Show password" : "Hide password"}
                                 >
-                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                                 </button>
                             </div>
                         </div>
