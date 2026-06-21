@@ -1,3 +1,4 @@
+import ExportPDFButton from "@/components/dashboard/ExportPDFButton";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -124,6 +125,7 @@ export default async function DashboardPage() {
           <div className="hidden lg:flex justify-end mb-4">
             <ThemeToggle />
           </div>
+          <div id="dashboard-report">
           {/* Hero */}
           <DashboardHero
             userName={dashboard.user.firstName}
@@ -135,7 +137,9 @@ export default async function DashboardPage() {
             insight={dashboard.hero.insight}
             currentValue={dashboard.portfolio.currentValue}
           />
-
+          <div className="flex justify-end mt-6">
+            <ExportPDFButton />
+            </div>
           {/* Row 1: Health Card + Portfolio Chart */}
           <div id="portfolio" className="grid grid-cols-1  lg:grid-cols-[500px_1fr] gap-10 mt-6 scroll-mt-20">
             <FinancialHealthCard health={dashboard.financialHealth} />
@@ -153,6 +157,7 @@ export default async function DashboardPage() {
             <RecentActivity activities={dashboard.activities} />
             <QuickTools tools={dashboard.tools} />
           </div>
+        </div>
         </div>
       </main>
     </div>
