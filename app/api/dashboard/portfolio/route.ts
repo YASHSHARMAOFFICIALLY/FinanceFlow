@@ -65,7 +65,11 @@ export async function POST(request: Request) {
 
   const now = new Date();
   const nextInvested = latestPoint.invested + parsed.data.amountInvested;
-  const nextCurrentValue = latestPoint.value + parsed.data.amountInvested;
+
+  const growthMultiplier = latestPoint.invested > 0 ? latestPoint.value / latestPoint.invested : 1;
+
+  const nextCurrentValue =
+    latestPoint.value + Math.round(parsed.data.amountInvested * growthMultiplier);
   const snapshotData = buildSnapshotLabels(now);
 
   await db.$transaction(async (tx) => {
