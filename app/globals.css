@@ -147,3 +147,9 @@ H1, H2, H3, H4, H5, H6 {
 @utility animate-marquee {
   animation: marquee 32s linear infinite;
 }
+
+/* Hide Microsoft Edge password reveal button */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
