@@ -1,5 +1,7 @@
 'use client'
 import { useState, useRef } from "react";
+import { toast } from "sonner";
+
 
 const SUGGESTED_TAGS = [
     "Investing", "SIP", "Stocks", "Budgeting",
@@ -77,6 +79,7 @@ export default function CreatePost({ onPost }) {
         setBody("");
         setSelectedTags([]);
         setExpanded(false);
+         toast.success("Discussion posted successfully!");
     };
 
     return (

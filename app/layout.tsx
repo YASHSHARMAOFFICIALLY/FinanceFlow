@@ -4,6 +4,7 @@ import "./globals.css";
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeProvider } from "@/components/theme-provider";
 import BackToTop from "@/components/ui/back-to-top";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,6 +58,7 @@ export default function RootLayout({
           <BackToTop />
         </ThemeProvider>
         <Analytics />
+        <Toaster/>
       </body>
     </html>
   );
