@@ -59,7 +59,7 @@ export default function SignUpPage() {
         } else {
             toast.success("Account created! Redirecting...");
             // Force a hard navigation if router.push feels "stuck"
-            window.location.href = "/dashboard"; 
+            router.push("/dashboard"); 
         }
     } catch (err) {
         toast.error("A network error occurred.");
