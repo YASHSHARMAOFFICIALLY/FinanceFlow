@@ -68,11 +68,11 @@ Finance Flow integrates learning, tools, and AI into one platform:
 
 ## ⚡ Getting Started
 
+### 1. Clone the repository
 ```bash
-git clone https://github.com/YASHSHARMAOFFICIALLY/FinanceFlow.git
+git clone [https://github.com/YASHSHARMAOFFICIALLY/FinanceFlow.git](https://github.com/YASHSHARMAOFFICIALLY/FinanceFlow.git)
 cd FinanceFlow
 npm install
-npm run dev
 ```
 
 Create a `.env` file with your PostgreSQL connection string and Gemini API key before running.
