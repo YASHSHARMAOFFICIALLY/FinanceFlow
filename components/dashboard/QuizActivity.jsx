@@ -56,10 +56,19 @@ function ActivityItem({ activity }) {
  */
 export default function RecentActivity({ activities = [] }) {
   const [filter, setFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const filteredActivities = useMemo(() => {
-    if (filter === "All") return activities;
-    return activities.filter((activity) => activity.category === filter);
-  }, [activities, filter]);
+  return activities.filter((activity) => {
+    const matchesCategory =
+      filter === "All" || activity.category === filter;
+
+    const matchesSearch =
+      activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.desc.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
+}, [activities, filter, searchTerm]);
 
   return (
     <div className="bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(10,16,21,0.99)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_14px_34px_rgba(0,0,0,0.34)]">
@@ -76,7 +85,25 @@ export default function RecentActivity({ activities = [] }) {
           View all →
         </Link>
       </div>
+     <div className="mb-4 relative">
+  <input
+    type="text"
+    placeholder="Search transactions..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="w-full px-4 py-2 pr-10 rounded-xl border border-[#E8E8E8] dark:border-[#243842] bg-white dark:bg-[#10181d] text-sm text-[#0F0F0F] dark:text-white placeholder:text-[#888] dark:placeholder:text-[#708692] outline-none focus:ring-2 focus:ring-[#0F0F0F] dark:focus:ring-[#f3efe3] transition-all"
+  />
 
+  {searchTerm && (
+    <button
+  onClick={() => setSearchTerm("")}
+  aria-label="Clear search"
+  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors"
+>
+  ✕
+</button>
+  )}
+</div>
       {/* Filter tabs */}
       <div className="flex gap-1.5 mb-4">
         {["All", "Investing", "Learning", "Goals"].map((f) => (
@@ -96,7 +123,7 @@ export default function RecentActivity({ activities = [] }) {
 
       {filteredActivities.length === 0 ? (
         <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2d434f] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#89a0ad] bg-transparent dark:bg-[#10181d]/70">
-          No activity in this category yet.
+          No matching transactions found.
         </div>
       ) : (
         <div className="flex flex-col divide-y divide-[#F5F5F5] dark:divide-[#22343d]">
