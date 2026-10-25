@@ -36,6 +36,7 @@ const tools = [
     name: "SIP Calculator",
     desc: "Project your mutual fund returns over any time horizon with monthly SIP planning.",
     tag: "Investing",
+    link: "/tools#sip-calc",
   },
   {
     icon: (
@@ -47,6 +48,8 @@ const tools = [
     name: "Compound Interest",
     desc: "See the real power of compounding on your savings and fixed deposits.",
     tag: "Savings",
+    
+
   },
   {
     icon: (
@@ -66,9 +69,10 @@ const tools = [
         <circle cx="16" cy="4" r="1.5" fill="#C9A84C"/>
       </svg>
     ),
-    name: "Net Worth Tracker",
-    desc: "Calculate your total net worth — assets minus liabilities — in minutes.",
+    name: "Stock Market Calculator",
+    desc: "Measure investment performance with quick and accurate market calculations.",
     tag: "Planning",
+    link: "tools#stock-tool"
   },
   {
     icon: (
@@ -80,6 +84,7 @@ const tools = [
     name: "EMI Calculator",
     desc: "Understand your loan repayment schedule and total interest paid on any loan.",
     tag: "Debt",
+    link: "/tools#emi-calc"
   },
   {
     icon: (
@@ -92,6 +97,7 @@ const tools = [
     name: "Goal Planner",
     desc: "Plan for your financial goals — home, car, vacation — with a clear savings roadmap.",
     tag: "Goals",
+    link : "/tools#goal-tracker"
   },
 ];
 
@@ -145,8 +151,8 @@ function ToolCard({ tool, delay }) {
       <h3 className="text-[15px] font-semibold tracking-[-0.02em] mb-2">{tool.name}</h3>
       <p className="text-[13.5px] leading-relaxed text-[#777] dark:text-[#888] tracking-[-0.01em]">{tool.desc}</p>
       <div className="mt-5 flex items-center gap-1 text-[12.5px] font-medium text-[#888] dark:text-[#777] group-hover:text-[#0F0F0F] dark:group-hover:text-white transition-colors duration-200">
-        Open tool
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="group-hover:translate-x-0.5 transition-transform duration-200">
+        <a href = {tool.link}>Open tool</a>
+        <svg  width="12" height="12" viewBox="0 0 12 12" fill="none" className="group-hover:translate-x-0.5 transition-transform duration-200">
           <path d="M2 6H10M10 6L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </div>
