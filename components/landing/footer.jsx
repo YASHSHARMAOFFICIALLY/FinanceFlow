@@ -27,11 +27,19 @@ export default function Footer() {
             <a href="#" className="flex items-center gap-2 mb-4">
               <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] dark:bg-white flex items-center justify-center">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 10L7 4L12 10" stroke="#C9A84C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="7" cy="11" r="1.2" fill="#C9A84C"/>
+                  <path
+                    d="M2 10L7 4L12 10"
+                    stroke="#C9A84C"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="7" cy="11" r="1.2" fill="#C9A84C" />
                 </svg>
               </div>
-              <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F] dark:text-white">Finveda</span>
+              <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F] dark:text-white">
+                FinanceFlow
+              </span>
             </a>
             <p className="text-[13px] text-[#888] dark:text-[#777] leading-relaxed max-w-[180px]">
               Personal finance learning and tracking, simplified.
@@ -65,14 +73,14 @@ export default function Footer() {
             © {new Date().getFullYear()} FinanceFlow. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-          <a
+            <a
               href="https://x.com/buildwithyash"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
-              >
+            >
               Twitter
-          </a>
+            </a>
 
             <a
               href="https://www.linkedin.com/in/buildwithyash/"
@@ -80,18 +88,18 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
             >
-            LinkedIn
+              LinkedIn
             </a>
 
             <a
               href="https://github.com/YASHSHARMAOFFICIALLY"
-               target="_blank"
-                rel="noopener noreferrer"
-                className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
-              >
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
+            >
               GitHub
             </a>
-</div>
+          </div>
         </div>
       </div>
     </footer>
