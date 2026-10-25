@@ -60,7 +60,7 @@ function StreakBadge({ streak }) {
 // ── In-quiz top header ─────────────────────────────────────
 function QuizHeader({ title }) {
   return (
-    <div className="text-center px-6 pt-8 pb-2">
+    <div className="text-center px-6 pt-8 pb-2 ">
       <div
         className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5F1E8] border border-[#E8DFC0] mb-5"
         style={{ animation: "fadeUp 0.4s ease both" }}
@@ -174,7 +174,7 @@ export default function QuizPage() {
       </h1>
       <StreakBadge streak={streak} />
       <ProgressBar current={qIndex} total={QUESTIONS.length} />
-      <div className="max-w-[680px] mx-auto px-6 pb-24">
+      <div className=" mx-auto px-6 pb-24">
         <div key={cardKey}>
           <QuizCard
             question={currentQuestion}
