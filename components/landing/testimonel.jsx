@@ -1,5 +1,6 @@
 'use client'
 import { useRef } from "react";
+import Link from "next/link";
 
 const testimonials = [
   {
@@ -86,6 +87,7 @@ function TestimonialCard({ t }) {
       <blockquote className="text-[14.5px] leading-relaxed text-[#333] dark:text-[#ccc] tracking-[-0.01em] mb-5">
         &ldquo;{t.quote}&rdquo;
       </blockquote>
+
       <div className="flex items-center gap-3">
         <div
           className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-semibold flex-shrink-0"
@@ -93,18 +95,20 @@ function TestimonialCard({ t }) {
         >
           {t.avatar}
         </div>
+
         <div>
           <div className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">
             {t.name}
           </div>
-          <div className="text-[12px] text-[#888] dark:text-[#777]">{t.role}</div>
+          <div className="text-[12px] text-[#888] dark:text-[#777]">
+            {t.role}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// Duplicate cards for seamless infinite loop
 const track = [...testimonials, ...testimonials];
 
 export default function Testimonials() {
@@ -117,6 +121,7 @@ export default function Testimonials() {
             Testimonials
           </span>
         </div>
+
         <h2
           className="text-[38px] font-semibold tracking-[-0.03em] text-[#0F0F0F] dark:text-white max-w-lg mx-auto leading-tight"
           style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
@@ -125,11 +130,10 @@ export default function Testimonials() {
         </h2>
       </div>
 
-      {/* Marquee track */}
+      {/* Marquee */}
       <div
         className="relative w-full"
         style={{
-          // Edge fade mask
           maskImage:
             "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
           WebkitMaskImage:
@@ -139,8 +143,6 @@ export default function Testimonials() {
         <div
           className="flex gap-4 w-max animate-marquee hover:[animation-play-state:paused]"
           style={{
-            // Each card is 340px + 16px gap = 356px
-            // 6 original cards × 356 = 2136px — that's the translate distance for one full loop
             animation: "marquee 32s linear infinite",
           }}
         >
@@ -150,32 +152,52 @@ export default function Testimonials() {
         </div>
       </div>
 
-      {/* Social proof bar */}
-      <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-[13px] text-[#888] dark:text-[#777] px-6">
-        <div className="flex items-center gap-2">
-          <div className="flex -space-x-2">
-            {["#F5F1E8", "#F0F5FF", "#F0FBF4", "#F8F0FF"].map((bg, i) => (
-              <div
-                key={i}
-                className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0A0A0A]"
-                style={{ background: bg }}
-              />
-            ))}
+      {/* Social proof + CTA */}
+      <div className="mt-12 px-6 flex flex-col items-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-8 text-[13px] text-[#888] dark:text-[#777]">
+          <div className="flex items-center gap-2">
+            <div className="flex -space-x-2">
+              {["#F5F1E8", "#F0F5FF", "#F0FBF4", "#F8F0FF"].map((bg, i) => (
+                <div
+                  key={i}
+                  className="w-7 h-7 rounded-full border-2 border-white dark:border-[#0A0A0A]"
+                  style={{ background: bg }}
+                />
+              ))}
+            </div>
+            <span>10,000+ learners</span>
           </div>
-          <span>10,000+ learners</span>
+
+          <div className="w-1 h-1 rounded-full bg-[#DDD] dark:bg-[#444]" />
+
+          <div className="flex items-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path
+                d="M6.5 1L7.89 4.82L12 5.27L9 8.16L9.85 12.24L6.5 10.23L3.15 12.24L4 8.16L1 5.27L5.11 4.82L6.5 1Z"
+                fill="#C9A84C"
+              />
+            </svg>
+            <span>4.9 / 5 average rating</span>
+          </div>
+
+          <div className="w-1 h-1 rounded-full bg-[#DDD] dark:bg-[#444]" />
+          <span>Free forever plan available</span>
         </div>
-        <div className="w-1 h-1 rounded-full bg-[#DDD] dark:bg-[#444]" />
-        <div className="flex items-center gap-1.5">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-            <path
-              d="M6.5 1L7.89 4.82L12 5.27L9 8.16L9.85 12.24L6.5 10.23L3.15 12.24L4 8.16L1 5.27L5.11 4.82L6.5 1Z"
-              fill="#C9A84C"
-            />
-          </svg>
-          <span>4.9 / 5 average rating</span>
-        </div>
-        <div className="w-1 h-1 rounded-full bg-[#DDD] dark:bg-[#444]" />
-        <span>Free forever plan available</span>
+
+        {/* CTA BUTTON */}
+        <Link href="/review">
+          <button
+            className="px-6 py-2.5 rounded-full text-[13px] font-medium 
+            border border-[#E8E8E8] dark:border-[#2a2a2a]
+            bg-white dark:bg-[#1a1a1a]
+            text-[#0F0F0F] dark:text-white
+            hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] 
+            dark:hover:shadow-[0_8px_24px_rgba(0,0,0,0.35)]
+            transition-all duration-200 hover:-translate-y-0.5"
+          >
+            Share Your Experience
+          </button>
+        </Link>
       </div>
     </section>
   );
