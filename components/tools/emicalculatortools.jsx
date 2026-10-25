@@ -98,14 +98,6 @@ Total Payment: ${fmt(totalPayment)}
                     </button>
                   ))}
                 </div>
-                <div className="mt-4 flex justify-center">
-  <button
-    onClick={handleCopy}
-    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
-  >
-    {copied ? "Copied!" : "Copy Result"}
-  </button>
-</div>
               </div>
             </div>
           </div>
@@ -124,6 +116,15 @@ Total Payment: ${fmt(totalPayment)}
                 <span>Interest {interestPct}%</span>
               </div>
             </div>
+
+            <div className="mt-4 flex justify-center">
+  <button
+    onClick={handleCopy}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
+  >
+    {copied ? "Copied!" : "Copy Result"}
+  </button>
+</div>
 
             {/* Breakdown cards */}
             <div className="grid grid-cols-1 gap-3">
