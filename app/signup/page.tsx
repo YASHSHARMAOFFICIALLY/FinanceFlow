@@ -12,7 +12,6 @@ import { authClient } from "@/lib/auth-client";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { toast } from "sonner";
 import Link from "next/link";
-import z from "zod";
 
 export default function SignUpPage() {
     const router = useRouter();
@@ -21,6 +20,46 @@ export default function SignUpPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [formErrors, setFormErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+    const [passwordError, setPasswordError] = useState("");
+
+    const getPasswordValidationMessage = (value: string) => {
+        if (value.length < 8) return "Password must contain at least 8 characters";
+        if (!/[A-Z]/.test(value)) return "Password should include at least one uppercase letter";
+        if (!/[a-z]/.test(value)) return "Password should include at least one lowercase letter";
+        if (!/[0-9]/.test(value)) return "Password should include at least one number";
+        if (!/[^A-Za-z0-9]/.test(value)) return "Password should include at least one special character";
+        return "";
+    };
+
+    const getPasswordRequirements = (value: string) => [
+        {
+            label: "At least 8 characters",
+            passed: value.length >= 8,
+        },
+        {
+            label: "One uppercase letter",
+            passed: /[A-Z]/.test(value),
+        },
+        {
+            label: "One lowercase letter",
+            passed: /[a-z]/.test(value),
+        },
+        {
+            label: "One number",
+            passed: /[0-9]/.test(value),
+        },
+        {
+            label: "One special character",
+            passed: /[^A-Za-z0-9]/.test(value),
+        },
+    ];
+
+    const handlePasswordChange = (value: string) => {
+        setPassword(value);
+        setPasswordError(getPasswordValidationMessage(value));
+        setFormErrors((current) => ({ ...current, password: undefined }));
+    };
 
 
     
@@ -37,15 +76,30 @@ export default function SignUpPage() {
     const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFormErrors({});
 
-    // 1. Validate
     const result = signupSchema.safeParse({ name, email, password });
     if (!result.success) {
+        const errors = result.error.issues.reduce(
+            (acc, issue) => {
+                if (issue.path.includes("password") && !acc.password) acc.password = issue.message;
+                if (issue.path.includes("email") && !acc.email) acc.email = issue.message;
+                if (issue.path.includes("name") && !acc.name) acc.name = issue.message;
+                return acc;
+            },
+            { name: undefined, email: undefined, password: undefined } as {
+                name?: string;
+                email?: string;
+                password?: string;
+            }
+        );
+
+        setFormErrors(errors);
+        setPasswordError(errors.password || getPasswordValidationMessage(password));
         setLoading(false);
-        return toast.error(result.error.issues[0].message);
+        return toast.error(errors.password || errors.email || errors.name || result.error.issues[0].message);
     }
 
-    // 2. Execute
     try {
         const { data, error } = await authClient.signUp.email({
             email,
@@ -143,9 +197,10 @@ export default function SignUpPage() {
                                     placeholder="••••••••"
                                     className="pl-10 pr-10 h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => handlePasswordChange(e.target.value)}
                                     required 
                                     minLength={8}
+                                    aria-describedby="password-error"
                                 />
                                 <button
                                     type="button"
@@ -156,9 +211,22 @@ export default function SignUpPage() {
                                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                 </button>
                             </div>
-                            <p className="text-[10px] text-muted-foreground">
-                                Must be at least 8 characters long
-                            </p>
+                            {(formErrors.password || passwordError) ? (
+                                <p id="password-error" className="text-[10px] text-destructive">
+                                    {formErrors.password || passwordError}
+                                </p>
+                            ) : null}
+                            <div className="mt-2 flex flex-wrap gap-2 text-[10px] text-gray-500 dark:text-gray-400">
+                                {getPasswordRequirements(password).map((requirement, index) => (
+                                    <span
+                                        key={requirement.label}
+                                        className={requirement.passed ? "text-green-600 dark:text-green-400" : "text-destructive"}
+                                    >
+                                        {index > 0 ? "• " : ""}
+                                        {requirement.label}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                         <Button type="submit" className="w-full h-11 rounded-lg bg-gradient-to-r from-gray-900 to-gray-700 text-white hover:opacity-90 transition cursor-pointer" disabled={loading}>
                             {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
