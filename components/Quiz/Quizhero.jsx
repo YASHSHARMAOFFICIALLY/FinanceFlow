@@ -160,9 +160,30 @@ export default function QuizHero({ onStart }) {
   return (
     <div className="hero" style={{ paddingBottom: 0, textAlign: 'center' }}>
       {/* Badge */}
-      <div className="hero-badge" style={{ marginBottom: 16 }}>
-        <span className="hero-badge-dot" />
-        Finance Quiz · 10 Questions
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "8px 18px",
+          borderRadius: 100,
+          background: "linear-gradient(135deg, #F5F1E8, #EDE6D3)",
+          border: "1px solid #E8DFC0",
+          boxShadow: "0 2px 8px rgba(201,168,76,0.12)",
+          marginBottom: 20,
+          fontSize: 13,
+          fontWeight: 600,
+          color: "#1A1A1A",
+          letterSpacing: "-0.01em",
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="1" y="3" width="14" height="10" rx="2" stroke="#C9A84C" strokeWidth="1.3" />
+          <path d="M5 7L8 10L11 7" stroke="#C9A84C" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Finance Quiz
+        <span style={{ width: 1, height: 14, background: "#D4C5A0" }} />
+        10 Questions
       </div>
 
       {/* Title */}
