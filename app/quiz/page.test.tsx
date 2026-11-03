@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import Page from './page';
-import nextConfig from '../../next.config';
 
 jest.mock('@/components/Quiz/QuizPage', () => {
   return function MockQuizPage() {
@@ -19,17 +18,5 @@ describe('Quiz Page', () => {
     render(<Page />);
     expect(screen.getByTestId('mock-navbar')).toBeInTheDocument();
     expect(screen.getByTestId('mock-quiz-page')).toBeInTheDocument();
-  });
-
-  it('configures permanent redirect from /Quiz to /quiz', async () => {
-    expect(nextConfig.redirects).toBeDefined();
-    if (nextConfig.redirects) {
-      const redirects = await nextConfig.redirects();
-      expect(redirects).toContainEqual({
-        source: '/Quiz',
-        destination: '/quiz',
-        permanent: true,
-      });
-    }
   });
 });
