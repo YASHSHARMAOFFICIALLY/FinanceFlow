@@ -16,6 +16,7 @@ describe('Navbar', () => {
     expect(screen.getByText('Tools')).toBeInTheDocument();
     expect(screen.getByText('Learn')).toBeInTheDocument();
     expect(screen.getByText('Quiz')).toBeInTheDocument();
+    expect(screen.getByText('Quiz').closest('a')).toHaveAttribute('href', '/quiz');
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
   });
 

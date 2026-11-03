@@ -32,7 +32,7 @@ export default async function DashboardPage() {
     { label: "Goals", icon: "🎯", href: "/dashboard#goals" },
     { label: "Tools", icon: "🔧", href: "/tools" },
     { label: "Learn", icon: "📚", href: "/learn" },
-    { label: "Quiz", icon: "🧠", href: "/Quiz" },
+    { label: "Quiz", icon: "🧠", href: "/quiz" },
   ];
 
   return (
