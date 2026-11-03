@@ -895,7 +895,7 @@ function mapDashboardData(input: {
         bg: "#F8F0FF",
         border: "#E0C8F8",
         color: "#7A4AA0",
-        href: "/Quiz",
+        href: "/quiz",
       },
       {
         id: "learn",

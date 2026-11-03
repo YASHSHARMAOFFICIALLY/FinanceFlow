@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
-const protectedRoutes = ["/dashboard", "/tools", "/learn", "/Quiz", "/arthsathi"];
+const protectedRoutes = ["/dashboard", "/tools", "/learn", "/quiz", "/arthsathi"];
 
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -9,6 +9,11 @@ export async function middleware(request: NextRequest) {
   // Auth routes must NEVER be touched by middleware
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
+  }
+
+  // Safely redirect legacy /Quiz requests to canonical /quiz with 308 (exact-case check prevents loops)
+  if (pathname === "/Quiz") {
+    return NextResponse.redirect(new URL(`/quiz${search}`, request.url), 308);
   }
 
   const isProtected = protectedRoutes.some(
@@ -29,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)" ],
+  matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico).*)"],
 };
